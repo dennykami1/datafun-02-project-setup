@@ -17,6 +17,7 @@ Date: 2025-01-24
 # Import moduldes from standand library
 # TODO: Import additional modules as needed
 import pathlib
+from datetime import datetime
 
 # Import local modules
 import utils_kamidenny
@@ -35,7 +36,7 @@ data_path = project_path.joinpath('data')
 data_path.mkdir(exist_ok=True)
 
 #####################################
-# Define Function create_folders_for_range For item in Range: Create a function to generate folders for a given range (e.g., years).
+# Define Function 1. For item in Range: Create a function to generate folders for a given range (e.g., years).
 # Pass in an int for the first year
 # Pass in an int for the last year
 #####################################
@@ -53,9 +54,9 @@ def create_folders_for_range(start_year: int, end_year: int) -> None:
     Returns:
     None
     '''
-    for year in range(start_year, end_year + 1):
-        folder_year = data_path.joinpath(str(year))
-        folder_year.mkdir(parents=True, exist_ok=True)
+    for year in range(start_year, end_year + 1):            # Loop through the range of years
+        folder_year = data_path.joinpath(str(year))         # Create a path object for the year
+        folder_year.mkdir(parents=True, exist_ok=True)      # Create the folder if it doesn't exist
         print(f"Created folder: {folder_year}")
 
     # Log the function call and its arguments using an f-string
@@ -66,11 +67,38 @@ def create_folders_for_range(start_year: int, end_year: int) -> None:
 # Pass in a list of folder names 
 #####################################
 
-def create_folders_from_list(folder_list: list) -> None:
-    # TODO: Add docstring
-    # TODO: Log the function call and its arguments
-    # TODO: Implement this function and remove the temporary pass
-    pass
+def create_folders_from_list(folder_list: list, make_lowercase: bool = False, replace_spaces: bool = False, add_date: bool = False) -> None:
+    '''
+    Purpose:
+    Create folders from a list of names.
+    
+    Arguments:
+    folder_list -- A list of folder names to create.
+    make_lowercase -- If True, convert folder names to lowercase.
+    replace_spaces -- If True, replace spaces with underscores.
+    add_date -- If True, add today's date to the end of folder names.
+
+    Returns:
+    None
+    '''
+
+    #Define today's date
+    today_date = datetime.now().strftime("%Y%m%d")
+
+    for folder_name in folder_list:
+        if make_lowercase:
+            folder_name = folder_name.lower()               # Convert to lowercase
+        if replace_spaces:
+            folder_name = folder_name.replace(" ", "_")     # Replace spaces with underscores
+        if add_date:
+            folder_name = f"{folder_name}_{today_date}"     # Add today's date to the end of the folder name
+        
+        folder_name = data_path.joinpath(folder_name)       # Create a path object for the folder
+        folder_name.mkdir(parents=True, exist_ok=True)      # Create the folder if it doesn't exist
+        print(f"Created folder: {folder_name}")
+
+    # Log the function call and its arguments using an f-string
+    print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}")
 
 
   
@@ -116,8 +144,8 @@ def main() -> None:
     create_folders_for_range(start_year=2020, end_year=2023)
 
     # Call function 2 to create folders given a list
-    folder_names = ['data-csv', 'data-excel', 'data-json']
-    create_folders_from_list(folder_names)
+    folder_names = ['data-csv', 'data-excel', 'data-json','Final Deliverables']
+    create_folders_from_list(folder_names, make_lowercase=True, replace_spaces=True, add_date=True)
 
     # Call function 3 to create folders using comprehension
     folder_names = ['csv', 'excel', 'json']
