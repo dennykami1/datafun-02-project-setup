@@ -100,19 +100,34 @@ def create_folders_from_list(folder_list: list, make_lowercase: bool = False, re
     # Log the function call and its arguments using an f-string
     print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}")
 
-
   
 #####################################
 # Define Function 3. List Comprehension: Create a function to create prefixed folders by transforming a list of names and combining each with a prefix (e.g., "data-").
 # Pass in a list of folder names
-# Pass in a prefix (e.g. 'data-') to add to each
+# Pass in a prefix (e.g. 'data-', or 'final-') to add to each
 #####################################
 
 def create_prefixed_folders(folder_list: list, prefix: str) -> None:
-    # TODO: Implement this function professionally and remove the temporary pass
-    pass
+    '''
+    Purpose:
+    # Create folders from a list of names with a prefix.
+    
+    Arguments:
+    folder_list -- A list of folder names to create.
+    prefix -- A prefix to add to each folder name.
 
-  
+    Returns:
+    None
+    '''
+
+    for folder_name in folder_list:
+        prefix_folder_name = f"{prefix}{folder_name}"              # Add the prefix to the folder name
+        folder_name = data_path.joinpath(prefix_folder_name)       # Create a path object for the folder
+        folder_name.mkdir(parents=True, exist_ok=True)             # Create the folder if it doesn't exist
+
+    # Log the function call and its arguments using an f-string
+    print(f"FUNCTION CALLED: create_prefixed_folders where prefix={prefix}, and folder_list={folder_list}")
+
 
 #####################################
 # Define Function 4. While Loop: Write a function to create folders periodically (e.g., one folder every 5 seconds).
@@ -144,20 +159,19 @@ def main() -> None:
     create_folders_for_range(start_year=2020, end_year=2023)
 
     # Call function 2 to create folders given a list
-    folder_names = ['data-csv', 'data-excel', 'data-json','Final Deliverables']
-    create_folders_from_list(folder_names, make_lowercase=True, replace_spaces=True, add_date=True)
+    folder_names = ['data-csv', 'data-excel', 'data-json']
+    create_folders_from_list(folder_names)
 
     # Call function 3 to create folders using comprehension
     folder_names = ['csv', 'excel', 'json']
-    prefix = 'data-'
+    prefix = 'final-'
     create_prefixed_folders(folder_names, prefix)
 
     # Call function 4 to create folders periodically using while
     duration_secs:int = 5  # duration in seconds
     create_folders_periodically(duration_secs)
 
-    # TODO: Add options e.g., to force lowercase and remove spaces 
-    # to one or more of your functions (e.g. function 2) 
+    
     # Call your function and test these options
     regions = [
       "North America", 
@@ -168,8 +182,7 @@ def main() -> None:
       "Oceania", 
       "Middle East"
     ]
-    # Uncomment this line after you've added your custom logic
-    # create_folders_from_list(regions, to_lowercase=True, remove_spaces=True)
+    create_folders_from_list(regions, make_lowercase=True, replace_spaces=True, add_date=True)
 
     # End of main execution
     print("\n#####################################")
