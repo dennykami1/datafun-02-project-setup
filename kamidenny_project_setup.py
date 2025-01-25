@@ -15,12 +15,13 @@ Date: 2025-01-24
 #####################################
 
 # Import moduldes from standand library
-# TODO: Import additional modules as needed
 import pathlib
+import time
 from datetime import datetime
 
 # Import local modules
 import utils_kamidenny
+
 
 #####################################
 # Declare global variables
@@ -34,6 +35,7 @@ data_path = project_path.joinpath('data')
 
 # Create the data path if it doesn't exist, otherwise do nothing
 data_path.mkdir(exist_ok=True)
+
 
 #####################################
 # Define Function 1. For item in Range: Create a function to generate folders for a given range (e.g., years).
@@ -61,7 +63,8 @@ def create_folders_for_range(start_year: int, end_year: int) -> None:
 
     # Log the function call and its arguments using an f-string
     print(f"FUNCTION CALLED: create_folders_for_range with start_year={start_year} and end_year={end_year}") 
-  
+
+
 #####################################
 # Define Function Function 2. For Item in List: Develop a function to create folders from a list of names.
 # Pass in a list of folder names 
@@ -98,9 +101,9 @@ def create_folders_from_list(folder_list: list, make_lowercase: bool = False, re
         print(f"Created folder: {folder_name}")
 
     # Log the function call and its arguments using an f-string
-    print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}")
+    print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}, make_lowercase={make_lowercase}, replace_spaces={replace_spaces}, add_date={add_date}")
 
-  
+
 #####################################
 # Define Function 3. List Comprehension: Create a function to create prefixed folders by transforming a list of names and combining each with a prefix (e.g., "data-").
 # Pass in a list of folder names
@@ -134,12 +137,30 @@ def create_prefixed_folders(folder_list: list, prefix: str) -> None:
 # Pass in the wait time in seconds
 #####################################
 
-def create_folders_periodically(duration_seconds: int) -> None:
-    # TODO: Implement this function professionally and remove the temporary pass
-    pass
+def create_folders_periodically(duration_seconds: int, max_folders: int) -> None:
+    '''
+    Purpose:
+    Create folders periodically with a delay between each folder.
+    
+    Arguments:
+    duration_seconds -- The number of seconds to wait between creating each folder.
+    max_folders -- The maximum number of folders to create.
+
+    Returns:
+    None
+    '''
+    folder_number = 0                                                # Initialize the folder number
+    while folder_number < max_folders:                               # Loop until the folder number reaches the maximum
+        folder_name = data_path.joinpath(f"folder_{folder_number}")  # Create a path object for the folder
+        folder_name.mkdir(parents=True, exist_ok=True)               # Create the folder if it doesn't exist
+        print(f"Created folder: {folder_name}")                      # Print the folder name
+        folder_number += 1                                           # Increment the folder number
+        time.sleep(duration_seconds)                                 # Wait for the specified duration
+
+    # Log the function call and its arguments using an f-string
+    print(f"FUNCTION CALLED: create_folders_periodically with duration_seconds={duration_seconds}, max_folders={max_folders}")
 
 
-  
 #####################################
 # Define a main() function for this module.
 #####################################
@@ -169,8 +190,8 @@ def main() -> None:
 
     # Call function 4 to create folders periodically using while
     duration_secs:int = 5  # duration in seconds
-    create_folders_periodically(duration_secs)
-
+    max_folders:int = 6    # maximum number of folders to create
+    create_folders_periodically(duration_secs, max_folders)
     
     # Call your function and test these options
     regions = [
@@ -196,5 +217,3 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
-#TODO: Run this as a script to test that all functions work as intended.
